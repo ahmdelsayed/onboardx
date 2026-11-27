@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OnboardX | التحاق رقمي فوري - FlexiPay</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Crect x='2' y='2' width='48' height='48' rx='12' fill='%230b5cff'/%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: #f4f6fb; color: #1c2333; }
+  header { background: linear-gradient(135deg, #072a6b, #0b5cff); color: #fff; padding: 26px 16px 74px; }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  .top { display: flex; align-items: center; gap: 14px; }
+  .top .names b { display: block; font-size: 20px; }
+  .top .names span { font-size: 13px; opacity: .85; }
+  .hero { text-align: center; padding: 30px 0 6px; }
+  .hero h1 { font-size: 30px; margin: 0 0 10px; }
+  .hero p { font-size: 16px; opacity: .92; max-width: 560px; margin: 0 auto; line-height: 1.8; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: -46px; }
+  a.card, .card { background: #fff; border-radius: 16px; padding: 24px; text-decoration: none; color: inherit; box-shadow: 0 4px 18px rgba(7,42,107,.10); }
+  a.card { transition: transform .12s ease; display: block; }
+  a.card:hover { transform: translateY(-3px); }
+  .card h2 { margin: 0 0 8px; font-size: 19px; color: #0b5cff; }
+  .card p { margin: 0; color: #4b5568; font-size: 14px; line-height: 1.8; }
+  .qr { text-align: center; }
+  .qr img { width: 170px; height: 170px; border-radius: 12px; border: 6px solid #eef3ff; margin: 6px 0 10px; }
+  .flow { margin: 34px 0 8px; }
+  .flow h3 { font-size: 18px; margin: 0 0 14px; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .steps.c3 { grid-template-columns: repeat(3, 1fr); }
+  .steps.c2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px) { .steps.c3, .steps.c2 { grid-template-columns: 1fr 1fr; } }
+  .step { background: #fff; border-radius: 12px; padding: 14px; font-size: 13px; line-height: 1.7; box-shadow: 0 1px 6px rgba(7,42,107,.07); }
+  .step b { display: block; color: #0b5cff; margin-bottom: 4px; font-size: 14px; }
+  .step .n { display: inline-block; background: #0b5cff; color: #fff; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; text-align: center; font-size: 12px; margin-left: 6px; }
+  footer { text-align: center; color: #8a93a6; font-size: 12px; padding: 30px 0 20px; line-height: 1.9; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="OnboardX">
+  <rect x="2" y="2" width="48" height="48" rx="12" fill="#0b5cff"/>
+  <path d="M14 33V19l12 14V19" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="38.5" cy="33" r="3.2" fill="#ffd166"/>
+</svg>
+      <div class="names"><b>OnboardX</b><span>OnboardX Automation Systems &times; FlexiPay</span></div>
+    </div>
+    <div class="hero">
+      <h1>التحاق العملاء في دقائق، مش أيام</h1>
+      <p>منظومة eKYC بالذكاء الاصطناعي لعميل BNPL: امسح الـ QR، صوّر البطاقة والسيلفي، وخد قرار وحد ائتماني فوري - والحالات المشكوك فيها بس تروح لمراجع بشري.</p>
+<nav style="margin-top:14px;display:flex;gap:16px;flex-wrap:wrap">
+      <a href="app.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">تسجيل عميل</a>
+      <a href="status.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">الحالة المباشرة</a>
+      <a href="cases.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">تتبع حالة</a>
+      <a href="analytics.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">التحليلات</a>
+      <a href="architecture.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">المعمارية</a>
+      <a href="security.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">الأمان</a>
+      <a href="assistant.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">المساعد الذكي</a>
+      <a href="docs.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">API</a>
+      <a href="tour.html" style="color:#cfe0ff;text-decoration:none;font-size:14px">سيناريو العرض</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <div class="cards">
+    <a class="card" href="app.html">
+      <h2>تسجيل عميل جديد</h2>
+      <p>فورم الالتحاق: موافقة على معالجة البيانات، تصوير البطاقة (وجه وظهر) وسيلفي مع فحص جودة وإعادة تصوير، ثم البيانات - ويُرسل للمنظومة مباشرة.</p>
+    </a>
+    <a class="card" href="https://ahmed2404843.app.n8n.cloud/webhook/onboardx-review">
+      <h2>لوحة مراجعة الحالات</h2>
+      <p>للمسؤول: طابور الحالات المعلّقة مع الأسباب، فتح كل حالة، وتسجيل القرار (قبول / رفض / طلب مستندات إضافية) مع سجل تدقيق كامل.</p>
+    </a>
+    <div class="card qr">
+      <h2>امسح وجرّب</h2>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=8&data=https%3A%2F%2Fahmdelsayed.github.io%2Fonboardx%2Fapp.html" alt="QR لفتح فورم التسجيل">
+      <p>كود التاجر من سيناريو الـ PDF: العميل يمسحه ويبدأ الالتحاق فورا.</p>
+    </div>
+  </div>
+  <div class="flow">
+    <h3>رحلة الالتحاق (٣ دقائق للحالة النظيفة)</h3>
+    <div class="steps c3">
+      <div class="step"><b><span class="n">1</span>البداية</b>مسح QR التاجر وفتح الفورم مع الموافقة على معالجة البيانات</div>
+      <div class="step"><b><span class="n">2</span>التقاط</b>تصوير البطاقة والسيلفي مع فحص الجودة وإعادة المحاولة</div>
+      <div class="step"><b><span class="n">3</span>قراءة</b>استخراج بيانات البطاقة بالـ OCR والتحقق من صيغة الرقم القومي</div>
+      <div class="step"><b><span class="n">4</span>تحقق</b>مطابقة الوجه وكشف الحيوية وصحة المستند</div>
+      <div class="step"><b><span class="n">5</span>فحص</b>قوائم AML و PEP بمطابقة ضبابية للأسماء</div>
+      <div class="step"><b><span class="n">6</span>قرار</b>تقييم مخاطر وحد ائتماني فوري أو تحويل للمراجعة</div>
+    </div>
+  </div>
+  <div class="flow">
+    <h3>قدرات المنظومة</h3>
+    <div class="steps c3">
+      <a class="step" href="analytics.html" style="text-decoration:none;color:inherit"><b>التحليلات</b>توزيع القرارات، نسبة القرار الآلي مقابل المراجعة، ومتوسط زمن القرار - لايف من قاعدة البيانات</a>
+      <a class="step" href="security.html" style="text-decoration:none;color:inherit"><b>الأمان والامتثال</b>تشفير، سجل تدقيق غير قابل للتعديل، فصل صلاحيات، ومصفوفة امتثال PDPL و KYC/AML</a>
+      <a class="step" href="assistant.html" style="text-decoration:none;color:inherit"><b>المساعد الذكي</b>اسأل بالعربي عن أي طلب أو إحصائية، والإجابة من بيانات النظام نفسها</a>
+      <a class="step" href="architecture.html" style="text-decoration:none;color:inherit"><b>المعمارية</b>خمس مراحل معالجة في Workflow واحد، من الاستقبال لحد الإشعار والاحتفاظ</a>
+      <a class="step" href="docs.html" style="text-decoration:none;color:inherit"><b>واجهات API</b>كل نقاط التكامل موثّقة: التسجيل، الإحصاءات، الاستعلام عن حالة، والمساعد</a>
+      <a class="step" href="tour.html" style="text-decoration:none;color:inherit"><b>سيناريو العرض</b>خريطة الديمو الكاملة وأسئلة اللجنة المتوقعة مع إجاباتها</a>
+    </div>
+  </div>
+
+  <div class="flow">
+    <h3>ضوابط مؤسسية مدمجة</h3>
+    <div class="steps c2">
+      <div class="step"><b>سجل تدقيق</b>كل حدث مسجل بوقته وسببه، بدون مسار للتعديل أو الحذف</div>
+      <div class="step"><b>فصل صلاحيات</b>النظام يقترح ويحسب، والإنسان يقرر في الحالات المعلقة بس</div>
+      <div class="step"><b>موافقة صريحة</b>العميل يوافق على معالجة بياناته قبل أي خطوة، والموافقة مسجلة مع الطلب</div>
+      <div class="step"><b>فحص AML / PEP</b>أي تطابق مع قوائم المراقبة يوقف القرار الآلي ويحوّل الطلب لمراجعة بشرية</div>
+    </div>
+  </div>
+</main>
+<footer>
+  مشروع تخرج DEPI - فريق OnboardX Automation Systems<br>
+  العميل الدراسي: FlexiPay - تمويل استهلاكي و BNPL
+</footer>
+</body>
+</html>
