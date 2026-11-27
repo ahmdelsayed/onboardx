@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FlexiPay - OnboardX</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; margin: 0; color: #222; }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 16px; }
+  .brand { text-align: center; padding: 20px 0 8px; }
+  .brand h1 { margin: 0; font-size: 22px; color: #0b5cff; }
+  .brand p { margin: 4px 0 0; color: #666; font-size: 13px; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; margin: 12px 0; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .step { display: none; } .step.active { display: block; }
+  label { display: block; font-size: 14px; margin: 10px 0 4px; }
+  input[type=text], input[type=tel], input[type=email] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+  button.primary { width: 100%; padding: 14px; background: #0b5cff; color: #fff; border: 0; border-radius: 10px; font-size: 17px; margin-top: 14px; }
+  button.primary:disabled { background: #9db9f5; }
+  .capture-box { border: 2px dashed #b9c6e0; border-radius: 10px; padding: 14px; text-align: center; margin: 10px 0; }
+  .capture-box img { max-width: 100%; border-radius: 8px; margin-top: 8px; }
+  .msg { font-size: 14px; padding: 10px; border-radius: 8px; margin-top: 8px; display: none; }
+  .msg.err { display: block; background: #fdecea; color: #b3261e; }
+  .msg.ok { display: block; background: #e7f4e8; color: #1e7d32; }
+  .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+  .consent input { margin-top: 3px; }
+  .lang { position: absolute; top: 10px; inset-inline-end: 12px; background: none; border: 1px solid #ccc; border-radius: 20px; padding: 4px 12px; font-size: 13px; }
+  .result { text-align: center; } .result .big { font-size: 40px; }
+  .hint { font-size: 12px; color: #888; }
+</style>
+</head>
+<body>
+<button class="lang" id="langBtn" onclick="toggleLang()">EN</button>
+<div class="wrap">
+  <div class="brand">
+<p style="margin:0 0 6px"><a href="index.html" style="color:#0b5cff;font-size:13px">&larr; الرئيسية</a></p><h1>FlexiPay</h1><p id="tagline">فعّل حسابك في دقائق</p></div>
+
+  <div class="card step active" id="stepConsent">
+    <h2 id="consentTitle">الموافقة على معالجة البيانات</h2>
+    <p class="hint" id="consentText">هنجمع صورة بطاقتك وصورة سيلفي عشان نتحقق من هويتك ونفعّل حسابك. البيانات بتتستخدم لغرض التفعيل فقط ومحمية حسب قانون حماية البيانات المصري.</p>
+    <div class="consent">
+      <input type="checkbox" id="consentChk">
+      <label for="consentChk" id="consentLbl" style="margin:0">أوافق على معالجة بياناتي لهذا الغرض</label>
+    </div>
+    <button class="primary" id="consentBtn" disabled onclick="goStep('stepCapture')">متابعة</button>
+  </div>
+
+  <div class="card step" id="stepCapture">
+    <h2 id="capTitle">صوّر المستندات</h2>
+    <div class="capture-box">
+      <label id="lblFront">صورة البطاقة (الوجه الأمامي)</label>
+      <input type="file" id="fileFront" accept="image/*" capture="environment">
+      <div id="prevFront"></div><div class="msg" id="msgFront"></div>
+    </div>
+    <div class="capture-box">
+      <label id="lblBack">صورة البطاقة (الوجه الخلفي)</label>
+      <input type="file" id="fileBack" accept="image/*" capture="environment">
+      <div id="prevBack"></div><div class="msg" id="msgBack"></div>
+    </div>
+    <div class="capture-box">
+      <label id="lblSelfie">صورة سيلفي</label>
+      <input type="file" id="fileSelfie" accept="image/*" capture="user">
+      <div id="prevSelfie"></div><div class="msg" id="msgSelfie"></div>
+    </div>
+    <button class="primary" onclick="goStep('stepDetails')">متابعة</button>
+  </div>
+
+  <div class="card step" id="stepDetails">
+    <h2 id="detTitle">بيانات التواصل</h2>
+    <label id="lblNid">الرقم القومي (14 رقم)</label>
+    <input type="text" id="nid" inputmode="numeric" maxlength="14" placeholder="٢٩٩٠١٠١١٥٠١٢٣٤">
+    <label id="lblEmail">البريد الإلكتروني</label>
+    <input type="email" id="email" placeholder="name@example.com" style="direction:ltr">
+    <label id="lblPhone">رقم الموبايل</label>
+    <input type="tel" id="phone" placeholder="01xxxxxxxxx" style="direction:ltr">
+    <div class="msg" id="msgDetails"></div>
+    <button class="primary" id="submitBtn" onclick="submitAll()">إرسال الطلب</button>
+  </div>
+
+  <div class="card step result" id="stepResult">
+    <div class="big" id="resIcon">⏳</div>
+    <h2 id="resTitle">جاري مراجعة طلبك...</h2>
+    <p id="resBody"></p>
+  </div>
+</div>
+
+<script>
+// ====== CONFIG: set the WF-01 intake webhook URL of your n8n instance ======
+const N8N_WEBHOOK_URL = 'https://ahmed2404843.app.n8n.cloud/webhook/onboardx-intake';
+const MAX_ATTEMPTS = 3;
+
+const qs = new URLSearchParams(location.search);
+const merchantId = qs.get('merchant') || 'MRC-DEMO';
+const channel = qs.get('channel') || (qs.get('merchant') ? 'qr' : 'app');
+
+const attempts = { Front: 0, Back: 0, Selfie: 0 };
+const images = { Front: null, Back: null, Selfie: null };
+let lang = 'ar';
+
+const T = {
+  ar: { tagline:'فعّل حسابك في دقائق', consentTitle:'الموافقة على معالجة البيانات',
+    consentText:'هنجمع صورة بطاقتك وصورة سيلفي عشان نتحقق من هويتك ونفعّل حسابك. البيانات بتتستخدم لغرض التفعيل فقط ومحمية حسب قانون حماية البيانات المصري.',
+    consentLbl:'أوافق على معالجة بياناتي لهذا الغرض', next:'متابعة', capTitle:'صوّر المستندات',
+    lblFront:'صورة البطاقة (الوجه الأمامي)', lblBack:'صورة البطاقة (الوجه الخلفي)', lblSelfie:'صورة سيلفي',
+    detTitle:'بيانات التواصل', lblNid:'الرقم القومي (14 رقم)', lblEmail:'البريد الإلكتروني', lblPhone:'رقم الموبايل',
+    submit:'إرسال الطلب', blurry:'الصورة مش واضحة. صوّرها تاني في إضاءة كويسة.', tooSmall:'دقة الصورة منخفضة. قرّب الكاميرا من البطاقة.',
+    tooMany:'محاولات كتير. جرب تاني بعدين أو اطلب مساعدة الموظف.', ok:'الصورة كويسة ✓',
+    nidBad:'الرقم القومي لازم يكون 14 رقم.', emailBad:'البريد الإلكتروني مش صحيح.', missingImg:'صوّر كل المستندات الأول.',
+    wait:'جاري مراجعة طلبك...', approved:'تمت الموافقة! 🎉', approvedBody:'حد الائتمان الخاص بك: ',
+    review:'طلبك قيد المراجعة', reviewBody:'هنوصلك بالنتيجة خلال يوم عمل. رقم الطلب: ',
+    fail:'حصلت مشكلة في الإرسال. جرب تاني.' },
+  en: { tagline:'Activate your account in minutes', consentTitle:'Data processing consent',
+    consentText:'We collect a photo of your ID and a selfie to verify your identity and activate your account. Data is used only for activation and protected under Egyptian data protection law.',
+    consentLbl:'I agree to the processing of my data for this purpose', next:'Continue', capTitle:'Capture your documents',
+    lblFront:'ID photo (front)', lblBack:'ID photo (back)', lblSelfie:'Selfie',
+    detTitle:'Contact details', lblNid:'National ID (14 digits)', lblEmail:'Email', lblPhone:'Mobile number',
+    submit:'Submit application', blurry:'The photo is blurry. Retake it in good light.', tooSmall:'Resolution too low. Move the camera closer.',
+    tooMany:'Too many attempts. Try again later or ask staff.', ok:'Photo looks good ✓',
+    nidBad:'National ID must be 14 digits.', emailBad:'Invalid email.', missingImg:'Capture all documents first.',
+    wait:'Reviewing your application...', approved:'Approved! 🎉', approvedBody:'Your credit limit: ',
+    review:'Under review', reviewBody:'We will notify you within one business day. Application: ',
+    fail:'Submission failed. Please try again.' }
+};
+
+function toggleLang() {
+  lang = lang === 'ar' ? 'en' : 'ar';
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.getElementById('langBtn').textContent = lang === 'ar' ? 'EN' : 'ع';
+  const d = T[lang];
+  for (const k of ['tagline','consentTitle','consentText','consentLbl','capTitle','lblFront','lblBack','lblSelfie','detTitle','lblNid','lblEmail','lblPhone']) {
+    const el = document.getElementById(k); if (el) el.textContent = d[k];
+  }
+  document.getElementById('consentBtn').textContent = d.next;
+  document.getElementById('submitBtn').textContent = d.submit;
+}
+document.getElementById('consentChk').addEventListener('change', e => {
+  document.getElementById('consentBtn').disabled = !e.target.checked;
+});
+
+function goStep(id) {
+  if (id === 'stepDetails' && !(images.Front && images.Back && images.Selfie)) { alert(T[lang].missingImg); return; }
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// Client-side image quality check (FR-04): resolution + brightness + blur (Laplacian variance)
+function analyzeImage(file) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 800, scale = Math.min(1, maxW / img.width);
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      const d = ctx.getImageData(0, 0, c.width, c.height).data;
+      const gray = new Float32Array(c.width * c.height);
+      let sum = 0;
+      for (let i = 0, j = 0; i < d.length; i += 4, j++) {
+        gray[j] = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+        sum += gray[j];
+      }
+      const brightness = sum / gray.length;
+      let lapSum = 0, lapSq = 0, n = 0;
+      for (let y = 1; y < c.height - 1; y++) for (let x = 1; x < c.width - 1; x++) {
+        const i = y * c.width + x;
+        const lap = 4 * gray[i] - gray[i - 1] - gray[i + 1] - gray[i - c.width] - gray[i + c.width];
+        lapSum += lap; lapSq += lap * lap; n++;
+      }
+      const mean = lapSum / n;
+      const variance = lapSq / n - mean * mean;
+      URL.revokeObjectURL(img.src);
+      resolve({ w: img.width, h: img.height, brightness, blurVar: variance });
+    };
+    img.onerror = () => resolve(null);
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+function hookCapture(key, inputId, prevId, msgId, minW) {
+  const inp = document.getElementById(inputId), prev = document.getElementById(prevId), msg = document.getElementById(msgId);
+  inp.addEventListener('change', async () => {
+    const f = inp.files[0]; if (!f) return;
+    attempts[key]++;
+    if (attempts[key] > MAX_ATTEMPTS) { msg.className = 'msg err'; msg.textContent = T[lang].tooMany; inp.disabled = true; return; }
+    const a = await analyzeImage(f);
+    if (!a) { msg.className = 'msg err'; msg.textContent = T[lang].blurry; return; }
+    if (a.w < minW) { msg.className = 'msg err'; msg.textContent = T[lang].tooSmall; images[key] = null; return; }
+    if (a.brightness < 40 || a.brightness > 225 || a.blurVar < 60) { msg.className = 'msg err'; msg.textContent = T[lang].blurry; images[key] = null; return; }
+    msg.className = 'msg ok'; msg.textContent = T[lang].ok;
+    images[key] = f;
+    prev.innerHTML = '<img src="' + URL.createObjectURL(f) + '">';
+  });
+}
+hookCapture('Front', 'fileFront', 'prevFront', 'msgFront', 800);
+hookCapture('Back', 'fileBack', 'prevBack', 'msgBack', 800);
+hookCapture('Selfie', 'fileSelfie', 'prevSelfie', 'msgSelfie', 400);
+
+function toB64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(String(r.result).split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+async function submitAll() {
+  const d = T[lang];
+  const nidV = document.getElementById('nid').value.replace(/\D/g, '');
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const msg = document.getElementById('msgDetails');
+  if (nidV.length !== 14) { msg.className = 'msg err'; msg.textContent = d.nidBad; return; }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.className = 'msg err'; msg.textContent = d.emailBad; return; }
+  msg.className = 'msg'; msg.textContent = '';
+  goStep('stepResult');
+  try {
+    const payload = {
+      merchant_id: merchantId, channel,
+      national_id: nidV, phone, email,
+      consent: { agreed: true, timestamp: new Date().toISOString() },
+      id_front_base64: await toB64(images.Front),
+      id_back_base64: await toB64(images.Back),
+      selfie_base64: await toB64(images.Selfie)
+    };
+    const resp = await fetch(N8N_WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const data = await resp.json();
+    if (data.status === 'AUTO_APPROVED') {
+      document.getElementById('resIcon').textContent = '✅';
+      document.getElementById('resTitle').textContent = d.approved;
+      document.getElementById('resBody').textContent = d.approvedBody + (data.credit_limit_egp || 0) + ' EGP. ' + (data.application_id || '');
+    } else {
+      document.getElementById('resIcon').textContent = '🕐';
+      document.getElementById('resTitle').textContent = d.review;
+      document.getElementById('resBody').textContent = d.reviewBody + (data.application_id || '');
+    }
+  } catch (e) {
+    document.getElementById('resIcon').textContent = '⚠️';
+    document.getElementById('resTitle').textContent = d.fail;
+    document.getElementById('resBody').textContent = '';
+  }
+}
+</script>
+</body>
+</html>
