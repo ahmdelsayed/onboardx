@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API | OnboardX</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: #f4f6fb; color: #1c2333; }
+  header { background: linear-gradient(135deg, #072a6b, #0b5cff); color: #fff; padding: 18px 16px; }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  header .wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  header h1 { font-size: 18px; margin: 0; }
+  nav { margin-right: auto; display: flex; gap: 14px; flex-wrap: wrap; }
+  nav a { color: #cfe0ff; text-decoration: none; font-size: 14px; }
+  nav a:hover { color: #fff; }
+  main { padding: 22px 16px 30px; }
+  h2 { color: #072a6b; font-size: 20px; margin: 22px 0 8px; }
+  .card { background: #fff; border-radius: 14px; padding: 18px 20px; box-shadow: 0 2px 10px rgba(7,42,107,.08); margin: 12px 0; }
+  code, pre { font-family: Consolas, monospace; background: #eef3ff; border-radius: 6px; }
+  code { padding: 2px 6px; font-size: 13px; }
+  pre { padding: 12px; font-size: 12.5px; overflow-x: auto; direction: ltr; text-align: left; line-height: 1.6; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  td, th { padding: 8px; border-bottom: 1px solid #eee; text-align: right; }
+  th { background: #fafbff; }
+  .kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .kpi .k { background: #fff; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 1px 6px rgba(7,42,107,.07); }
+  .kpi .k b { display: block; font-size: 26px; color: #0b5cff; }
+  .kpi .k span { font-size: 13px; color: #555; }
+  .muted { color: #7a8499; font-size: 13px; }
+  input[type=text] { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
+  button.primary { padding: 12px 22px; background: #0b5cff; color: #fff; border: 0; border-radius: 8px; font-size: 15px; cursor: pointer; }
+  .pipe { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; direction: rtl; }
+  .pipe .node { background: #fff; border: 2px solid #0b5cff; border-radius: 10px; padding: 8px 12px; font-size: 13px; }
+  .pipe .arrow { color: #0b5cff; font-weight: bold; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>OnboardX &times; FlexiPay</h1>
+    <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="app.html">تسجيل عميل</a>
+    <a href="status.html">الحالة المباشرة</a>
+    <a href="cases.html">تتبع حالة</a>
+    <a href="analytics.html">التحليلات</a>
+    <a href="architecture.html">المعمارية</a>
+    <a href="security.html">الأمان</a>
+    <a href="assistant.html">المساعد الذكي</a>
+    <a href="docs.html">API</a>
+    <a href="tour.html">العرض</a>
+    <a href="https://ahmed2404843.app.n8n.cloud/webhook/onboardx-review">لوحة المراجعة</a>
+  </nav>
+</div></header>
+<main class="wrap">
+
+<div class="card">
+<h2 style="margin-top:0">واجهات الـ API الحية</h2>
+<p>كل النداءات على أساس <code>https://ahmed2404843.app.n8n.cloud/webhook</code>. CORS مفتوح للعرض من أي دومين.</p>
+<table>
+<tr><th>الغرض</th><th>Method</th><th>Path</th></tr>
+<tr><td>استقبال طلب التحاق (OCR, تحقق, فحص, تقييم, قرار)</td><td>POST</td><td>/onboardx-intake</td></tr>
+<tr><td>لوحة طابور المراجعة (HTML)</td><td>GET</td><td>/onboardx-review</td></tr>
+<tr><td>صفحة حالة مفصلة (HTML)</td><td>GET</td><td>/onboardx-review-case?id=APP_ID</td></tr>
+<tr><td>تسجيل قرار المراجع</td><td>POST</td><td>/onboardx-review-action</td></tr>
+<tr><td>إحصاءات حية (JSON)</td><td>GET</td><td>/onboardx-stats</td></tr>
+<tr><td>استعلام عن حالة برقم الطلب (JSON)</td><td>GET</td><td>/onboardx-api-case?id=APP_ID</td></tr>
+</table>
+</div>
+<div class="card">
+<h2>مثال: إرسال طلب التحاق</h2>
+<pre>curl -X POST https://ahmed2404843.app.n8n.cloud/webhook/onboardx-intake \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "merchant_id": "STORE-102",
+    "channel": "qr",
+    "national_id": "29901011501234",
+    "consent": true,
+    "phone": "01012345678",
+    "id_front_base64": "&lt;base64 jpeg&gt;",
+    "id_back_base64": "&lt;base64 jpeg&gt;"
+  }'</pre>
+<p class="muted">الرد: <code>{"application_id":"OBX-...","status":"APPROVE|REVIEW|REJECT|COMPLIANCE_HOLD","score":N,"credit_limit_egp":N,"reasons":[...]}</code></p>
+</div>
+<div class="card">
+<h2>قرار المراجع</h2>
+<pre>curl -X POST https://ahmed2404843.app.n8n.cloud/webhook/onboardx-review-action \
+  -H 'Content-Type: application/json' \
+  -d '{"application_id":"OBX-...","reviewer":"reviewer@flexipay.demo","action":"APPROVE","reason":"documents verified"}'</pre>
+<p class="muted">action ∈ APPROVE | REJECT | MORE_INFO - السبب إلزامي (FR-23).</p>
+</div>
+</main>
+</body>
+</html>
