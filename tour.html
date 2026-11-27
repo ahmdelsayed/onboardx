@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سيناريو العرض التقديمي | OnboardX</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Crect x='2' y='2' width='48' height='48' rx='12' fill='%230b5cff'/%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: #f4f6fb; color: #1c2333; }
+  header { background: linear-gradient(135deg, #072a6b, #0b5cff); color: #fff; padding: 18px 16px; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header .wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  header h1 { font-size: 18px; margin: 0; }
+  nav { margin-right: auto; display: flex; gap: 12px; flex-wrap: wrap; }
+  nav a { color: #cfe0ff; text-decoration: none; font-size: 13.5px; }
+  nav a:hover { color: #fff; }
+  nav a.on { color: #fff; font-weight: 700; border-bottom: 2px solid #ffd166; }
+  main { padding: 22px 16px 34px; }
+  h2 { color: #072a6b; font-size: 20px; margin: 22px 0 8px; }
+  h3 { color: #072a6b; font-size: 16px; margin: 0 0 6px; }
+  .card { background: #fff; border-radius: 14px; padding: 18px 20px; box-shadow: 0 2px 10px rgba(7,42,107,.08); margin: 12px 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .muted { color: #7a8499; font-size: 13px; line-height: 1.8; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  td, th { padding: 9px 8px; border-bottom: 1px solid #eee; text-align: right; vertical-align: top; line-height: 1.7; }
+  th { background: #fafbff; color: #072a6b; }
+  code { font-family: Consolas, monospace; background: #eef3ff; border-radius: 6px; padding: 2px 6px; font-size: 13px; }
+  footer { text-align: center; color: #8a93a6; font-size: 12px; padding: 24px 0 26px; line-height: 1.9; }
+  .scene { background: #fff; border-radius: 14px; padding: 16px 18px; box-shadow: 0 2px 10px rgba(7,42,107,.08); border-right: 4px solid #0b5cff; margin: 12px 0; }
+  .scene .when { direction: ltr; unicode-bidi: isolate; display: inline-block; background: #0b5cff; color: #fff; border-radius: 999px; padding: 3px 12px; font-size: 12.5px; margin-inline-end: 8px; }
+  .scene .say { background: #f7f9ff; border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 2; margin: 10px 0 8px; color: #26314a; }
+  .scene .do { font-size: 13.5px; line-height: 1.95; color: #4b5568; }
+  .scene a.btn { display: inline-block; margin-top: 8px; background: #0b5cff; color: #fff; text-decoration: none; border-radius: 8px; padding: 8px 16px; font-size: 13.5px; }
+  .nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+  .nums .n { background: #072a6b; color: #fff; border-radius: 12px; padding: 14px; text-align: center; }
+  .nums .n b { display: block; font-size: 24px; }
+  .nums .n span { font-size: 12px; opacity: .85; }
+  .qa { border-bottom: 1px solid #eef1f7; padding: 12px 0; }
+  .qa:last-child { border-bottom: 0; }
+  .qa b { display: block; color: #072a6b; font-size: 14.5px; margin-bottom: 4px; }
+  .qa p { margin: 0; font-size: 13.8px; line-height: 1.95; color: #4b5568; }
+  @media print { header nav, footer { display: none; } .scene { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>OnboardX &times; FlexiPay</h1>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="app.html">تسجيل عميل</a>
+    <a href="status.html">الحالة المباشرة</a>
+    <a href="cases.html">تتبع حالة</a>
+    <a href="analytics.html">التحليلات</a>
+    <a href="architecture.html">المعمارية</a>
+    <a href="security.html">الأمان</a>
+    <a href="assistant.html">المساعد الذكي</a>
+    <a href="docs.html">API</a>
+    <a href="tour.html" class="on">العرض</a>
+    <a href="https://ahmed2404843.app.n8n.cloud/webhook/onboardx-review">لوحة المراجعة</a>
+  </nav>
+</div></header>
+<main class="wrap">
+
+<div class="card" style="background:linear-gradient(135deg,#072a6b,#0b5cff);color:#fff;border:0">
+  <h2 style="color:#fff;margin-top:0">سيناريو العرض التقديمي (١٥ دقيقة)</h2>
+  <p style="margin:0;line-height:1.95;font-size:14.5px;opacity:.95">
+    دي خريطة الديمو يوم المناقشة: كل مشهد فيه اللي بتعمله، اللي بتقوله، واللينك اللي بتفتحه.
+    الترتيب مبني على قصة واحدة: عميل جديد بيدخل، المنظومة بتقرر، حالة واحدة بتحتاج إنسان، وبعدين الأرقام والأمان.
+  </p>
+</div>
+
+<h2>أرقام تقولها في الأول</h2>
+<div class="card">
+<div class="nums">
+  <div class="n"><b>12s</b><span>متوسط زمن القرار</span></div>
+  <div class="n"><b>6</b><span>طلبات في قاعدة البيانات</span></div>
+  <div class="n"><b>70</b><span>عقدة في Workflow واحد</span></div>
+  <div class="n"><b>10</b><span>صفحات موقع</span></div>
+  <div class="n"><b>5</b><span>مراحل معالجة</span></div>
+</div>
+</div>
+
+<h2>المشاهد</h2>
+
+<div class="scene">
+  <h3><span class="when">0:00 - 1:30</span> المشكلة والسياق</h3>
+  <div class="say">«FlexiPay بتقدم تمويل استهلاكي، وكل عميل جديد لازم يتحقق من هويته. الطريقة اليدوية بتاخد أيام، وتكلفتها عالية، وبتفتح باب للتزوير. OnboardX بتحوّل الالتحاق ده لدقيقتين، بقرار آلي موثّق، ومخاطر محسوبة.»</div>
+  <div class="do">افتح الصفحة الرئيسية. أشِر على الـ QR وقول إن نفس الرابط ده هو اللي بيتطبع على ستاند التاجر.</div>
+  <a class="btn" href="index.html">افتح الرئيسية</a>
+</div>
+
+<div class="scene">
+  <h3><span class="when">1:30 - 4:00</span> تسجيل عميل جديد (حالة نظيفة)</h3>
+  <div class="say">«العميل بيمسح الكود، يوافق على معالجة بياناته، يصوّر البطاقة والسيلفي. لو الصورة مش واضحة، الفورم بيطلب إعادة تصوير فورًا قبل ما البيانات تتبعت - يعني مفيش طلبات فاشلة بتوصل للنظام.»</div>
+  <div class="do">املأ الفورم ببيانات تجريبية، صوّر بطاقة تجريبية، وكمّل. لو الأونلاين مستقر، كمّل لغاية القرار. الاحتياطي: استخدم حالة موجودة بالفعل.</div>
+  <a class="btn" href="app.html">افتح الفورم</a>
+</div>
+
+<div class="scene">
+  <h3><span class="when">4:00 - 6:00</span> إيه اللي حصل في الخلف</h3>
+  <div class="say">«في ١٢ ثانية: OCR استخرج البيانات، تحققنا من صيغة الرقم القومي وتاريخ الميلاد، طابقنا الوجه وفحصنا الحيوية، بعدين فحصنا قوائم العقوبات و PEP بمطابقة ضبابية، وبعدين حسبنا سكور المخاطر وطلعنا قرار وحد ائتمان. كل خطوة من دول مسجّلة في سجل التدقيق بوقتها.»</div>
+  <div class="do">افتح صفحة المعمارية وامشي على الـ pipeline، وبعدها لوحة الحالة عشان تشوف الطلب الجديد ظاهر.</div>
+  <a class="btn" href="architecture.html">المعمارية</a>
+</div>
+
+<div class="scene">
+  <h3><span class="when">6:00 - 8:00</span> الحالة المشكوك فيها</h3>
+  <div class="say">«الحالة دي اتوقفت تلقائيًا: الاسم طابق قائمة مراقبة. المنظومة مكانتش هتقبلها ولا هترفضها لوحدها - حوّلتها لمراجعة بشرية بسبب واضح. ده الفرق بين أتمتة مسؤولة وأتمتة عمياء.»</div>
+  <div class="do">افتح تتبع الحالة وابحث عن <code>OBX-DEMO003</code>. وضّح التايم لاين وقرار المراجع.</div>
+  <a class="btn" href="cases.html">تتبع حالة</a>
+</div>
+
+<div class="scene">
+  <h3><span class="when">8:00 - 10:00</span> لوحة المراجع والمساعد الذكي</h3>
+  <div class="say">«المراجع بيشوف بس الحالات اللي محتاجة عين بشر، ومعاه سبب التحويل والتايم لاين كامل. ولو سأل بالعربي عن أي حالة، المساعد بيجاوبه من بيانات النظام نفسها مش من تخمين.»</div>
+  <div class="do">افتح لوحة المراجعة، بعدين المساعد واسأل: "ليه OBX-DEMO003 موقوفة؟"</div>
+  <a class="btn" href="assistant.html">المساعد الذكي</a>
+</div>
+
+<div class="scene">
+  <h3><span class="when">10:00 - 12:30</span> التحليلات والأمان</h3>
+  <div class="say">«على مستوى الإدارة: نسبة القرار الآلي مقابل المراجعة البشرية، متوسط الزمن، وتوزيع القرارات - كلها لايف من قاعدة البيانات. وعلى مستوى الأمان: تشفير، سجل تدقيق غير قابل للتعديل، فصل صلاحيات، وامتثال PDPL وتعليمات البنك المركزي.»</div>
+  <div class="do">افتح التحليلات وخلّي اللجنة تشوف الأرقام وهي بتتحدث، بعدها صفحة الأمان.</div>
+  <a class="btn" href="analytics.html">التحليلات</a>
+</div>
+
+<div class="scene">
+  <h3><span class="when">12:30 - 15:00</span> الخلاصة والخطوات القادمة</h3>
+  <div class="say">«المنظومة شغالة على السحابة، بقاعدة بيانات حقيقية، وقابلة للتوسع. الخطوة القادمة: محرك LLM للإجابات بدل القواعد، تكامل مباشر مع نظام FlexiPay عبر API، وتوقيع إلكتروني للعقود.»</div>
+  <div class="do">ارجع للرئيسية وسيب اللجنة تسأل. لو طلبوا API، افتح صفحة الـ API.</div>
+  <a class="btn" href="docs.html">API</a>
+</div>
+
+<h2>أسئلة متوقعة من اللجنة</h2>
+<div class="card">
+  <div class="qa"><b>ليه استخدمتوا n8n مش كود من الأول؟</b><p>لأن كل خطوة في المنظومة محتاجة تكون مرئية وقابلة للتدقيق والتعديل من غير نشر جديد. الـ workflow الواحد بيوضّح المسار كامل، والمنطق الحرج مكتوب كود جوه عقده واضحة. ولو احتجنا ننقلها لخدمة مستقلة، نفس الـ API والـ DB هيفضلوا زي ما هما.</p></div>
+  <div class="qa"><b>لو الـ OCR غلط في رقم البطاقة؟</b><p>في طبقة تحقق بعد الـ OCR: صيغة الرقم القومي، تاريخ الميلاد، المحافظة، وتطابق الاسم. أي عدم تطابق مش بيروح لقرار آلي، بيروح لمراجعة بشرية بسبب مسجل.</p></div>
+  <div class="qa"><b>إيه اللي يمنع التزوير بالسيلفي؟</b><p>كشف الحيوية ومطابقة الوجه مع صورة البطاقة، وفحص جودة الصورة. أي فشل بيرجع العميل يعيد التصوير. ولو الفشل اتكرر، الطلب بيتحول للمراجعة بدل القبول.</p></div>
+  <div class="qa"><b>إيه الفرق عن حل جاهز زي أي مزود eKYC؟</b><p>التكلفة لكل تحقق، والقواعد متخصصة للسوق المصري (الرقم القومي والمحافظات)، وملكية كاملة للبيانات والكود، وإمكانية التخصيص لأي عميل BNPL تاني.</p></div>
+  <div class="qa"><b>إزاي المنظومة بتكبر؟</b><p>الـ webhooks stateless، وقاعدة البيانات مفهرسة على رقم الطلب والحالة، وكل مرحلة معالجة معزولة. التوسع بيبقى أفقي على مراحل المعالجة نفسها، والمراجعة البشرية بتتوسع بعدد المراجعين من غير تغيير في المنظومة.</p></div>
+  <div class="qa"><b>الأمان وحماية البيانات؟</b><p>صفحة الأمان فيها التفاصيل: تشفير، سجل تدقيق append-only، فصل صلاحيات، موافقة صريحة مسجلة، وسياسة احتفاظ وحذف. وفيها بصراحة اللي منفّذ واللي جاهز للتوسع.</p></div>
+</div>
+
+<h2>قبل المناقشة</h2>
+<div class="card">
+<p class="muted" style="margin:0">
+١. اتأكد إن الـ webhooks شغالة (افتح لوحة الحالة قبل العرض بـ ١٠ دقايق).<br>
+٢. جهّز صورة بطاقة تجريبية وصورة شخصية على الموبايل للتسجيل المباشر.<br>
+٣. اطبع الصفحة دي أو احفظها PDF كمرجع سريع (فيها أسئلة اللجنة).<br>
+٤. لو النت وقع في القاعة: الحالات المسجلة في قاعدة البيانات بتفضل ظاهرة من الكاش، والسيناريو بيشتغل على الأرقام الموجودة.
+</p>
+</div>
+</main>
+<footer>
+  مشروع تخرج DEPI - فريق OnboardX Automation Systems<br>
+  العميل الدراسي: FlexiPay - تمويل استهلاكي و BNPL
+</footer>
+</body>
+</html>
