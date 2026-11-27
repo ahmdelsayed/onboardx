@@ -52,3 +52,21 @@ action, so the dashboard, analytics and assistant all have something to show.
 - The assistant currently runs a rules engine (`rules-v1`) over live data. The page is wired so
   an LLM-backed retrieval (RAG) engine can replace it without a front-end change.
 - No real customer data is used. Screening hits are demo values.
+
+## Showroom installment flow (the real use case)
+
+A car showroom shows a QR code. The customer scans it, picks a car and an installment plan, reads the ID with the phone
+camera (live OCR pre-fills the form, identity fields are locked), takes a selfie, and sees every check run with its real
+result. The system then prepares the installment contract, and the showroom sees its customers and their status.
+
+| Page | What it does |
+| --- | --- |
+| `app.html` | Customer flow on the phone: car and plan, ID capture with frame and crop, review details, selfie, live progress and result |
+| `showroom.html` | Showroom dashboard: QR, customers and status, the showroom's own editable catalogue |
+| `track.html` | Status by application number, with every check and the next step |
+| `contract.html` | Installment contract template with e-acceptance (project template, not legal advice) |
+| `review.html`, `review-case.html` | Review desk: cases waiting for a human, extracted data, check results, reviewer decision |
+| `login.html` | Staff sign-in (Google), needs a Google client ID |
+
+Honest states: Face++ is not connected, so the face check is UNAVAILABLE and a person decides. Nothing is auto-rejected.
+Catalogue prices and model codes are the showroom's own configuration. These copies call the live n8n backend.
