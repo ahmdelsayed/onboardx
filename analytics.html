@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>التحليلات | OnboardX</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 52'%3E%3Crect x='2' y='2' width='48' height='48' rx='12' fill='%230b5cff'/%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: #f4f6fb; color: #1c2333; }
+  header { background: linear-gradient(135deg, #072a6b, #0b5cff); color: #fff; padding: 18px 16px; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header .wrap { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  header h1 { font-size: 18px; margin: 0; }
+  nav { margin-right: auto; display: flex; gap: 12px; flex-wrap: wrap; }
+  nav a { color: #cfe0ff; text-decoration: none; font-size: 13.5px; }
+  nav a:hover { color: #fff; }
+  nav a.on { color: #fff; font-weight: 700; border-bottom: 2px solid #ffd166; }
+  main { padding: 22px 16px 34px; }
+  h2 { color: #072a6b; font-size: 20px; margin: 22px 0 8px; }
+  h3 { color: #072a6b; font-size: 16px; margin: 0 0 6px; }
+  .card { background: #fff; border-radius: 14px; padding: 18px 20px; box-shadow: 0 2px 10px rgba(7,42,107,.08); margin: 12px 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .muted { color: #7a8499; font-size: 13px; line-height: 1.8; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  td, th { padding: 9px 8px; border-bottom: 1px solid #eee; text-align: right; vertical-align: top; }
+  th { background: #fafbff; color: #072a6b; }
+  code { font-family: Consolas, monospace; background: #eef3ff; border-radius: 6px; padding: 2px 6px; font-size: 13px; }
+  footer { text-align: center; color: #8a93a6; font-size: 12px; padding: 24px 0 26px; line-height: 1.9; }
+  .kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .kpi .k { background: #fff; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 1px 6px rgba(7,42,107,.07); }
+  .kpi .k b { display: block; font-size: 26px; color: #0b5cff; line-height: 1.2; }
+  .kpi .k span { font-size: 12.5px; color: #555; }
+  .split { display: grid; grid-template-columns: 300px 1fr; gap: 18px; align-items: center; }
+  @media (max-width: 700px) { .split { grid-template-columns: 1fr; } }
+  .legend { font-size: 13px; line-height: 2.1; }
+  .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-inline-end: 8px; }
+  .legend b { float: left; }
+  .bar { margin: 10px 0; }
+  .bar .lab { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; color: #3d4657; }
+  .bar .track { height: 10px; background: #eef1f7; border-radius: 6px; overflow: hidden; }
+  .bar .fill { height: 100%; border-radius: 6px; transition: width .5s ease; }
+  .mix { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .mix .m { background: #fafbff; border: 1px solid #eef1f7; border-radius: 12px; padding: 14px; }
+  .mix .m b { font-size: 22px; color: #072a6b; display: block; }
+  .mix .m span { font-size: 12.5px; color: #6b7488; }
+  button.ghost { padding: 8px 16px; background: #fff; color: #0b5cff; border: 1px solid #cddcff; border-radius: 8px; font-size: 13.5px; cursor: pointer; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>OnboardX &times; FlexiPay</h1>
+  <nav>
+    <a href="index.html">الرئيسية</a>
+    <a href="app.html">تسجيل عميل</a>
+    <a href="status.html">الحالة المباشرة</a>
+    <a href="cases.html">تتبع حالة</a>
+    <a href="analytics.html" class="on">التحليلات</a>
+    <a href="architecture.html">المعمارية</a>
+    <a href="security.html">الأمان</a>
+    <a href="assistant.html">المساعد الذكي</a>
+    <a href="docs.html">API</a>
+    <a href="tour.html">العرض</a>
+    <a href="https://ahmed2404843.app.n8n.cloud/webhook/onboardx-review">لوحة المراجعة</a>
+  </nav>
+</div></header>
+<main class="wrap">
+
+<div class="card" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+  <div style="flex:1;min-width:220px">
+    <h2 style="margin:0 0 4px">لوحة التحليلات</h2>
+    <p class="muted" style="margin:0">أرقام حية من قاعدة البيانات عبر <code>/webhook/onboardx-stats</code> - نفس المصدر اللي بيغذي لوحة الحالة، بس هنا بشكل تحليلي.</p>
+  </div>
+  <button class="ghost" onclick="load()">تحديث</button>
+</div>
+
+<div class="kpi" id="kpis"><p class="muted">جاري تحميل البيانات...</p></div>
+
+<h2>توزيع القرارات</h2>
+<div class="card">
+  <div class="split">
+    <div id="donutWrap" style="text-align:center"></div>
+    <div class="legend" id="legend"><p class="muted">جاري التحميل...</p></div>
+  </div>
+</div>
+
+<h2>مسار القرار: آلي مقابل بشري</h2>
+<div class="card">
+  <div class="mix" id="mix"><p class="muted">جاري التحميل...</p></div>
+  <p class="muted" style="margin:14px 0 0">النسبة دي هي أهم رقم في المشروع: كل ما القرار الآلي بيكسب أكتر، كل ما تكلفة الالتحاق بتقل، وكل ما التحويل للمراجعة بيبقى مركّز على الحالات اللي فعلاً محتاجة عين بشر.</p>
+</div>
+
+<h2>الأحداث المسجلة في سجل التدقيق</h2>
+<div class="card"><div id="events"><p class="muted">جاري التحميل...</p></div></div>
+
+<h2>تفصيل الحالات</h2>
+<div class="card"><div id="table"><p class="muted">جاري التحميل...</p></div></div>
+
+<p class="muted" id="stamp" style="text-align:center"></p>
+</main>
+<footer>
+  مشروع تخرج DEPI - فريق OnboardX Automation Systems<br>
+  العميل الدراسي: FlexiPay - تمويل استهلاكي و BNPL
+</footer>
+<script>
+const API = 'https://ahmed2404843.app.n8n.cloud/webhook/onboardx-stats';
+const LAB = {APPROVED:'مقبول', REJECTED:'مرفوض', REVIEW:'مراجعة بشرية', COMPLIANCE_HOLD:'إيقاف امتثال', SUBMITTED:'مقدم', IN_PROGRESS:'قيد المعالجة', OCR_COMPLETED:'قيد المعالجة'};
+const COL = {APPROVED:'#16a34a', REJECTED:'#dc2626', REVIEW:'#f59e0b', COMPLIANCE_HOLD:'#7c3aed', SUBMITTED:'#0b5cff', IN_PROGRESS:'#0891b2', OCR_COMPLETED:'#0891b2'};
+const EVL = {APPLICATION_RECEIVED:'استقبال طلب', APPLICATION_DUPLICATE_DETECTED:'طلب مكرر مرفوض', SUBMITTED:'استقبال طلب', OCR_COMPLETED:'استخراج OCR', OCR_DONE:'استخراج OCR', IDENTITY_VERIFIED:'تحقق هوية', SCREENING_HIT:'تطابق قوائم', SCREENING_CLEAR:'فحص نظيف', DECISION_APPROVE:'قرار قبول', DECISION_AUTO_APPROVE:'قبول آلي', DECISION_REJECT:'قرار رفض', DECISION_REVIEW:'تحويل لمراجعة', DECISION_COMPLIANCE_HOLD:'إيقاف امتثال', REVIEW_ACTION:'إجراء مراجع', NOTIFICATION_SENT:'إشعار عميل', NOTIFIED:'إشعار عميل', RETENTION_RUN:'دورة احتفاظ'};
+const num = n => (n === null || n === undefined) ? '-' : Number(n).toLocaleString('en-US');
+
+function donut(data){
+  const entries = Object.entries(data).filter(e => e[1] > 0);
+  const total = entries.reduce((s,e) => s + e[1], 0);
+  if(!total) return '<p class="muted">مفيش بيانات كفاية</p>';
+  const R = 62, C = 2 * Math.PI * R;
+  let off = 0, arcs = '';
+  for(const [k,v] of entries){
+    const len = v / total * C;
+    arcs += '<circle cx="80" cy="80" r="' + R + '" fill="none" stroke="' + (COL[k]||'#94a3b8') + '" stroke-width="26" stroke-dasharray="' + len.toFixed(2) + ' ' + (C-len).toFixed(2) + '" stroke-dashoffset="' + (-off).toFixed(2) + '" transform="rotate(-90 80 80)"></circle>';
+    off += len;
+  }
+  return '<svg width="180" height="180" viewBox="0 0 160 160" style="max-width:100%">' + arcs +
+    '<text x="80" y="76" text-anchor="middle" font-size="26" font-weight="700" fill="#072a6b">' + total + '</text>' +
+    '<text x="80" y="96" text-anchor="middle" font-size="11" fill="#7a8499">إجمالي الطلبات</text></svg>';
+}
+
+function load(){
+  fetch(API).then(r => r.json()).then(d => {
+    const apps = d.applications || {};
+    const evs = d.events || {};
+    const total = Object.values(apps).reduce((a,b) => a + b, 0);
+    const review = (apps.REVIEW||0) + (apps.COMPLIANCE_HOLD||0);
+    document.getElementById('kpis').innerHTML =
+      '<div class="k"><b>' + num(total) + '</b><span>إجمالي الطلبات</span></div>' +
+      '<div class="k"><b>' + (d.avg_decision_seconds != null ? d.avg_decision_seconds + 's' : '-') + '</b><span>متوسط زمن القرار</span></div>' +
+      '<div class="k"><b>' + num(review) + '</b><span>حالات محتاجة تدخل بشري</span></div>' +
+      '<div class="k"><b>' + num(d.review_actions) + '</b><span>إجراءات مراجعين مسجلة</span></div>';
+    document.getElementById('donutWrap').innerHTML = donut(apps);
+    document.getElementById('legend').innerHTML = Object.keys(apps).length
+      ? Object.entries(apps).sort((a,b)=>b[1]-a[1]).map(e => '<div><i style="background:' + (COL[e[0]]||'#94a3b8') + '"></i>' + (LAB[e[0]]||e[0]) + '<b>' + e[1] + '</b></div>').join('')
+      : '<p class="muted">مفيش طلبات بعد</p>';
+
+    const auto = apps.APPROVED || 0, rej = apps.REJECTED || 0, dec = total || 1;
+    const pct = n => Math.round(n / dec * 100);
+    const running = Math.max(0, total - auto - rej - review);
+    document.getElementById('mix').innerHTML =
+      '<div class="m"><b>' + pct(auto) + '%</b><span>قرار آلي (قبول)</span></div>' +
+      '<div class="m"><b>' + pct(review) + '%</b><span>تحويل لمراجعة بشرية</span></div>' +
+      '<div class="m"><b>' + pct(rej) + '%</b><span>رفض</span></div>' +
+      (running ? '<div class="m"><b>' + pct(running) + '%</b><span>قيد المعالجة</span></div>' : '');
+
+    const evEntries = Object.entries(evs).sort((a,b)=>b[1]-a[1]);
+    const maxEv = evEntries.length ? evEntries[0][1] : 1;
+    document.getElementById('events').innerHTML = evEntries.length
+      ? evEntries.map(e => '<div class="bar"><div class="lab"><span>' + (EVL[e[0]]||e[0]) + '</span><span>' + e[1] + '</span></div><div class="track"><div class="fill" style="width:' + Math.max(6, e[1]/maxEv*100) + '%;background:#0b5cff"></div></div></div>').join('')
+      : '<p class="muted">مفيش أحداث مسجلة</p>';
+
+    const rows = Object.entries(apps).sort((a,b)=>b[1]-a[1]);
+    document.getElementById('table').innerHTML = rows.length
+      ? '<table><tr><th>الحالة</th><th>العدد</th><th>النسبة</th></tr>' + rows.map(r => '<tr><td>' + (LAB[r[0]]||r[0]) + ' <code>' + r[0] + '</code></td><td>' + r[1] + '</td><td>' + pct(r[1]) + '%</td></tr>').join('') + '</table>'
+      : '<p class="muted">مفيش طلبات بعد</p>';
+
+    document.getElementById('stamp').textContent = 'آخر تحديث: ' + new Date().toLocaleString('ar-EG') + ' - المصدر: قاعدة البيانات مباشرة';
+  }).catch(e => {
+    document.getElementById('kpis').innerHTML = '<p class="muted">تعذر جلب البيانات من الشبكة. جرّب تحديث الصفحة، أو شوف <a href="status.html">لوحة الحالة</a>.</p>';
+  });
+}
+load(); setInterval(load, 30000);
+</script>
