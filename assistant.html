@@ -322,7 +322,7 @@ body.app .foot{margin-top:0}
   <p class="muted" style="margin:0">
     كل سؤال بيتبعت للـ endpoint <code>POST /webhook/onboardx-ask</code>، اللي بيقرأ الطلبات والقرارات وسجل التدقيق من قاعدة البيانات،
     ويرجّع إجابة مبنية على الأرقام الحقيقية - مش على نص عام. المساعد مش بيعدّل أي بيانات: قراءة فقط.
-    النسخة الحالية شغالة بمحرك قواعد (rules-v1) ومربوط عليها واجهة جاهزة للترقية لمحرك LLM مع استرجاع (RAG) على نفس البيانات.
+    المحرك نموذج لغة (Groq) بيقرا السياق المسترجع من قاعدة البيانات ويفتكر سياق المحادثة، ولو الاتصال بيه فشل بيرجع تلقائي لمحرك القواعد (rules-v1) عشان الصفحة متوقفش.
   </p>
 </div>
 </main><footer class="foot"><div class="in"><div class="about"><a class="brandlink" href="index.html" style="padding:0"><svg viewBox="0 0 64 64" aria-label="OnboardX"><defs><linearGradient id="gCF" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop stop-color="#5C8BFF"/><stop offset="1" stop-color="#A47BFF"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="17" fill="#0B1230" stroke="#3A4DB0" stroke-width="1.5"/><path d="M47 17.5A20 20 0 1 0 47 46.5" stroke="url(#gCF)" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M21.5 33L29 40.5L47 20.5" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="50.5" cy="32" r="4.5" fill="#FFC24B"/></svg><span>OnboardX<small dir="ltr">× FlexiPay</small></span></a><p style="margin-top:14px">مشروع تخرج DEPI - فريق OnboardX Automation Systems<br>العميل الدراسي: FlexiPay - تمويل استهلاكي و BNPL</p></div><div><h4>المنتج</h4><a href="app.html">تسجيل عميل</a><a href="status.html">الحالة المباشرة</a><a href="cases.html">تتبع حالة</a><a href="analytics.html">التحليلات</a></div><div><h4>المنظومة</h4><a href="architecture.html">المعمارية</a><a href="security.html">الأمان</a><a href="docs.html">API</a><a href="tour.html">سيناريو العرض</a></div></div><div class="bot">© 2026 OnboardX Automation Systems</div></footer>
@@ -346,11 +346,11 @@ function addMsg(text, me, save){
   d.className = 'msg ' + (me ? 'me' : 'bot');
   d.textContent = text;
   if(!me){
-    const id = (text.match(/OBX-[A-Z0-9]+/i) || [])[0];
-    if(id){
+    const ids = Array.from(new Set((text.match(/OBX-[A-Z0-9]+/gi) || []).map(function(x){return x.toUpperCase();}))).slice(0,4);
+    if(ids.length){
       const s = document.createElement('span');
       s.className = 'src';
-      s.innerHTML = 'المصدر: سجل الطلبات - <a href="cases.html?id=' + id.toUpperCase() + '">افتح الحالة ' + id.toUpperCase() + '</a>';
+      s.innerHTML = 'المصدر: سجل الطلبات - ' + ids.map(function(id){return '<a href="cases.html?id=' + id + '">' + id + '</a>';}).join(' · ');
       d.appendChild(s);
     }
   }
@@ -382,7 +382,7 @@ async function ask(preset){
   addMsg(q, true);
   const t = typing();
   try {
-    const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({question: q})});
+    const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({question: q, lang: document.documentElement.lang==='en'?'en':'ar', history: history.slice(0,-1).slice(-12).map(function(h){return {role:h.me?'user':'assistant',content:String(h.t).slice(0,1200)};})})});
     const d = await r.json();
     t.remove();
     addMsg(d.answer || 'مقدرتش ألاقي إجابة للسؤال ده.', false);
