@@ -409,7 +409,7 @@ function renderNext(d){
 }
 
 var ID=q('id');
-var TOK=localStorage.getItem('obx-token')||'';
+var DEMO=/[?&]demo=1/.test(location.search);var TOK=localStorage.getItem('obx-token')||(DEMO?'demo':'');
 if(!TOK){location.replace(G+'login.html');}
 document.head.insertAdjacentHTML('beforeend','<style>.imgrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:10px 0}.imgrow figure{margin:0}.imgrow img{width:100%;border-radius:12px;border:1px solid var(--line);background:#0B1118}.imgrow figcaption{font-size:12.5px;color:var(--mut);text-align:center;margin-top:5px}.btn.danger{background:linear-gradient(135deg,#C0392B,#8E2420)!important}</style>');
 var FEV={APPLICATION_RECEIVED:'استلام الطلب',OCR_DONE:'قراءة البطاقة (OCR)',IDENTITY_CHECK_UNAVAILABLE_HUMAN_REVIEW:'مقارنة الوجه غير متاحة - محوّل لمراجع بشري',IDENTITY_OK:'مطابقة الوجه ناجحة',IDENTITY_FACE_MISMATCH:'عدم تطابق الوجه',SCREENING_CLEAR:'فحص القوائم: نظيف',SCREENING_POSSIBLE_HIT:'تطابق محتمل مع القوائم',DECISION_AUTO_APPROVED:'قرار آلي: قبول',DECISION_REVIEW:'قرار آلي: مراجعة بشرية',DECISION_COMPLIANCE_HOLD:'قرار آلي: حجز امتثال',REVIEWED:'قرار مراجع بشري',NOTIFIED:'إرسال الإشعارات',CONTRACT_SIGNED:'توقيع العقد',DUPLICATE_APPLICATION:'طلب مكرر',STAFF_SIGN_IN:'تسجيل دخول موظف'};
@@ -420,7 +420,7 @@ function pdetail(p){if(!p)return'';try{p=typeof p==='string'?JSON.parse(p):p;}ca
   if(p.score!=null)return 'الدرجة: '+p.score;
   if(p.list)return 'القائمة: '+p.list;
   return '';}
-fetch(B+'ox-case-staff?id='+encodeURIComponent(ID)+'&token='+encodeURIComponent(TOK)).then(function(r){return r.json();}).then(function(d){
+var DEMO_CASE={"ok": true, "case": {"application_id": "OBX-DEMO01", "state": "IN_REVIEW", "full_name_ar": "كريم محمد السيد (عميل تجريبي)", "masked_id": "298***********14", "car_label": "Hyundai Elantra CN7 2024", "price_egp": 1350000, "down_payment_egp": 270000, "monthly_egp": 22500, "months": 60, "created_at": "2026-11-27T18:42:00Z", "birth_date": "1998-04-12", "address": "١٥ شارع مصطفى النحاس، مدينة نصر، القاهرة", "expiry_date": "2031-06-30"}, "images": {"front": "assets/demo/id-front.jpg", "back": "assets/demo/id-back.jpg", "selfie": "assets/demo/selfie.jpg"}, "events": [{"event": "APPLICATION_RECEIVED", "at": "2026-11-27T18:42:00Z"}, {"event": "OCR_DONE", "payload": {"score": 0.97}, "at": "2026-11-27T18:42:20Z"}, {"event": "IDENTITY_OK", "payload": {"similarity": 0.91}, "at": "2026-11-27T18:42:35Z"}, {"event": "SCREENING_CLEAR", "at": "2026-11-27T18:43:00Z"}], "reviews": [], "me": {"role": "employee"}};(DEMO?Promise.resolve({json:function(){return DEMO_CASE;}}):fetch(B+'ox-case-staff?id='+encodeURIComponent(ID)+'&token='+encodeURIComponent(TOK))).then(function(r){return r.json();}).then(function(d){
   var c=document.getElementById('c');
   if(!d||!d.ok){
     if(d&&d.error==='auth_required'){localStorage.removeItem('obx-token');location.replace(G+'login.html');return;}
@@ -460,7 +460,7 @@ fetch(B+'ox-case-staff?id='+encodeURIComponent(ID)+'&token='+encodeURIComponent(
   } else fh+='<p class="muted">دورك لا يسمح بتسجيل قرارات.</p>';
   if(role==='manager')fh+='<hr style="margin:20px 0;border:0;border-top:1px solid var(--line)"><h3>منطقة المدير</h3><p class="muted">الحذف النهائي بيمسح الطلب وكل بياناته وصوره وسجلاته من قاعدة البيانات.</p><button class="btn danger" id="del" type="button">حذف الطلب نهائيا</button>';
   f.innerHTML=fh;
-  if(canDecide)document.getElementById('sv').onclick=function(){var b=document.getElementById('sv'),rs=document.getElementById('rs').value.trim();
+  if(canDecide)document.getElementById('sv').onclick=function(){var b=document.getElementById('sv'),rs=document.getElementById('rs').value.trim();if(DEMO){document.getElementById('er').textContent='وضع العرض التجريبي: القرار لا يُحفظ فعلياً.';return;}
     if(!rs){document.getElementById('er').textContent='السبب إلزامي.';return;}b.disabled=true;
     fetch(B+'ox-review-action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({application_id:ID,token:TOK,action:document.getElementById('ac').value,reason:rs})}).then(function(r){return r.json();}).then(function(j){
       if(j&&j.ok===false&&j.error==='auth_required'){localStorage.removeItem('obx-token');location.replace(G+'login.html');return;}
