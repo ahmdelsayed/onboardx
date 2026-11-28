@@ -468,18 +468,7 @@ var pg=document.querySelector('.prog i');function sp(){if(!pg)return;var h=docum
 document.addEventListener('pointermove',function(e){var t=e.target.closest&&e.target.closest('.spot');if(t){var r=t.getBoundingClientRect();t.style.setProperty('--mx',(e.clientX-r.left)+'px');t.style.setProperty('--my',(e.clientY-r.top)+'px')}
  var h=document.querySelector('.hero');if(h&&e.target.closest&&e.target.closest('.hero')){var r2=h.getBoundingClientRect();h.style.setProperty('--gx',(e.clientX-r2.left)+'px');h.style.setProperty('--gy',(e.clientY-r2.top)+'px');var g=document.querySelector('.glass');if(g){g.style.setProperty('--ry',((e.clientX/innerWidth-.5)*-6)+'deg');g.style.setProperty('--rx',((e.clientY/innerHeight-.5)*5)+'deg')}}},{passive:true});
 })();
-</script><script>/*ob_role_view*/(function(){var r=new URLSearchParams(location.search).get('role');try{if(r)localStorage.setItem('ob_role',r);else r=localStorage.getItem('ob_role')}catch(e){}
-r=(r==='admin'||r==='user')?r:'';
-var wrap=document.querySelector('main')||document.body;
-var d=document.createElement('div');d.className='card';d.style.cssText='margin:14px auto;max-width:1100px;padding:12px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap';
-if(r==='admin')d.innerHTML='<span>عرض المدير: كل الصلاحيات</span><a class="btn ghost" href="https://ahmdelsayed.github.io/onboardx/login.html">غيّر الدور</a>';
-else if(r==='user')d.innerHTML='<span>عرض الموظف: قراءة فقط</span><a class="btn ghost" href="https://ahmdelsayed.github.io/onboardx/login.html">غيّر الدور</a>';
-else d.innerHTML='<span>اختار دورك الأول لتظهر لك الصلاحيات المناسبة</span><a class="btn" href="https://ahmdelsayed.github.io/onboardx/login.html">اختار الدور</a>';
-wrap.insertBefore(d,wrap.firstChild);
-document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(a&&r&&/review-case/.test(a.href)&&a.href.indexOf('role=')<0){a.href+=(a.href.indexOf('?')>0?'&':'?')+'role='+r;}},true);
-function lock(){var sv=document.getElementById('sv');if(!sv)return;if(r==='user'||r===''){var c=sv.closest('.card');if(c){c.innerHTML='<h2>القرار</h2><p class="muted">'+(r==='user'?'الموظف يشوف الحالة فقط. القرار للمدير.':'اختار دورك من صفحة الدخول عشان تظهر لك أزرار القرار.')+'</p>';}}}
-lock();setTimeout(lock,800);setTimeout(lock,2500);
-})();</script><script id="obx-shell">
+</script><script id="obx-shell">
 (function(){
 try{
 var FN=(location.pathname.split('/').pop()||'index.html');
