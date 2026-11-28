@@ -510,8 +510,9 @@ var FEE=0.01, MK=0.015;
 function plan(price,down,m){var f=price-down,fee=Math.round(f*FEE),mk=Math.round(f*MK*m),tot=f+fee+mk;return {financed:f,fee:fee,markup:mk,total:tot,monthly:Math.ceil(tot/m)};}
 function go(n){for(var i=1;i<=5;i++)document.getElementById('s'+i).style.display=(i===n?'block':'none');var bars=document.querySelectorAll('#pb i');for(var j=0;j<5;j++)bars[j].className=j<n?'on':'';window.scrollTo(0,0);}
 var READ=null;
+var DEMO=/[?&]demo=1/.test(location.search);var DEMO_CARS={"merchant": {"name": "معرض FlexiPay - فرع مدينة نصر"}, "cars": [{"car_id": 1, "brand": "Hyundai", "model": "Elantra CN7", "trim": "Smart", "body_type": "سيدان", "year": 2024, "price_egp": 1350000, "model_code": "HYU-ELA-CN7-24", "active": true}, {"car_id": 2, "brand": "Nissan", "model": "Sunny", "trim": "Classic", "body_type": "سيدان", "year": 2025, "price_egp": 725000, "model_code": "NIS-SUN-CL-25", "active": true}, {"car_id": 3, "brand": "Chery", "model": "Tiggo 7 Pro", "trim": "Luxury", "body_type": "SUV", "year": 2024, "price_egp": 1150000, "model_code": "CHR-TG7-LX-24", "active": true}, {"car_id": 4, "brand": "MG", "model": "5", "trim": "STD", "body_type": "سيدان", "year": 2025, "price_egp": 830000, "model_code": "MG5-STD-25", "active": true}, {"car_id": 5, "brand": "Toyota", "model": "Corolla", "trim": "XLI", "body_type": "سيدان", "year": 2024, "price_egp": 1650000, "model_code": "TOY-COR-XLI-24", "active": true}]};
 function loadCars(){
-  fetch(B+'ox-showroom-api?m='+encodeURIComponent(M)).then(function(r){return r.json();}).then(function(d){
+  (DEMO?Promise.resolve({json:function(){return DEMO_CARS;}}):fetch(B+'ox-showroom-api?m='+encodeURIComponent(M))).then(function(r){return r.json();}).then(function(d){
     if(d.merchant)document.getElementById('shopName').textContent=d.merchant.name;
     CARS=(d.cars||[]).filter(function(c){return c.active;});
     var brands=[];CARS.forEach(function(c){if(brands.indexOf(c.brand)<0)brands.push(c.brand);});
